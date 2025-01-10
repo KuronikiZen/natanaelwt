@@ -88,6 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .btn-back:hover {
             background-color: #5a6268;
         }
+
+        .upload-info {
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
     </style>
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -109,6 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="progress mt-3" style="display: none;">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progressBar">0%</div>
             </div>
+            <div class="upload-info" style="display: none;" id="uploadInfo"></div>
         </form>
         <div class="table-responsive">
             <table class="table table-hover">
@@ -151,14 +157,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             event.preventDefault();
             var formData = new FormData(this);
             var xhr = new XMLHttpRequest();
+            var uploadInfo = document.getElementById('uploadInfo');
+            var progressBar = document.getElementById('progressBar');
+            var startTime = new Date().getTime();
 
             xhr.upload.addEventListener('progress', function(e) {
                 if (e.lengthComputable) {
                     var percent = Math.round((e.loaded / e.total) * 100);
-                    var progressBar = document.getElementById('progressBar');
+                    var elapsedTime = (new Date().getTime() - startTime) / 1000; // seconds
+                    var speed = (e.loaded / 1024 / elapsedTime).toFixed(2); // KB/s
+                    var uploadedMB = (e.loaded / 1024 / 1024).toFixed(2);
+                    var totalMB = (e.total / 1024 / 1024).toFixed(2);
+
                     progressBar.style.width = percent + '%';
                     progressBar.setAttribute('aria-valuenow', percent);
                     progressBar.innerHTML = percent + '%';
+
+                    uploadInfo.style.display = 'block';
+                    uploadInfo.innerHTML = `Uploaded: ${uploadedMB} MB / ${totalMB} MB | Speed: ${speed} KB/s`;
                 }
             });
 
@@ -179,10 +195,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         });
                     }
                     document.querySelector('.progress').style.display = 'none';
-                    var progressBar = document.getElementById('progressBar');
                     progressBar.style.width = '0%';
                     progressBar.setAttribute('aria-valuenow', 0);
                     progressBar.innerHTML = '0%';
+                    uploadInfo.style.display = 'none';
                 }
             };
 
