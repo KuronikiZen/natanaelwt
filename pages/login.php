@@ -1,24 +1,41 @@
 <?php
+// Start session
+
 // Check if user is already logged in
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     header('Location: dashboard'); // Redirect to dashboard page if already logged in
     exit;
 }
 
-// Define hardcoded username and password (For demo purposes, you should use a database in production)
-$correct_username = 'natan';
-$correct_password = 'admin';
+// Database connection
+$host = 'localhost';
+$dbname = 'natanaelwt';
+$username = 'root'; // Replace with your database username
+$password = ''; // Replace with your database password
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $input_username = $_POST['username'];
+    $input_password = $_POST['password'];
 
-    // Validate credentials
-    if ($username === $correct_username && $password === $correct_password) {
-        // Set session variable
+    // Query to check user credentials
+    $sql = "SELECT * FROM users WHERE username = :username";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':username', $input_username, PDO::PARAM_STR);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && md5($input_password) == $user['password']) {
+        // Set session variables
         $_SESSION['loggedin'] = true;
-        $_SESSION['user'] = $_POST['username'];
+        $_SESSION['user'] = $user['username'];
 
         // Redirect to dashboard page after successful login
         header('Location: dashboard');
