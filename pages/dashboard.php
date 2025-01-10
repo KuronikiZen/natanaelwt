@@ -104,7 +104,7 @@ if (isset($_GET['logout'])) {
             <h2>Fitur-fitur:</h2>
             <ul>
                 <li><a href="fileManager">File Manager</a></li>
-                <li><a href="#">Fitur 2</a></li>
+                <li><a href="linkManager">Link Manager</a></li>
                 <li><a href="#">Fitur 3</a></li>
                 <li><a href="#">Fitur 4</a></li>
                 <li><a href="#">Fitur 5</a></li>

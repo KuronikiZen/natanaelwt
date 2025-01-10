@@ -16,6 +16,9 @@ switch($param1) {
     case 'fileManager':
         include 'pages/fileManager.php';
         break;
+    case 'linkManager':
+        include 'pages/linkManager.php';
+        break;
     case 'login':
         include 'pages/login.php';
         break;
