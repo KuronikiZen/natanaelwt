@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($name && $link) {
         $data = "$name|$link\n";
         if (file_put_contents($filename, $data, FILE_APPEND | LOCK_EX)) {
+            file_put_contents("log.txt", "The link " . $name . " has been uploaded by ".$_SESSION['user']."\n", FILE_APPEND | LOCK_EX);
             $response = ['status' => 'success', 'message' => 'Link added successfully.'];
         } else {
             $response['message'] = 'Failed to save link.';

@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($username === $correct_username && $password === $correct_password) {
         // Set session variable
         $_SESSION['loggedin'] = true;
+        $_SESSION['user'] = $_POST['username'];
 
         // Redirect to dashboard page after successful login
         header('Location: dashboard');

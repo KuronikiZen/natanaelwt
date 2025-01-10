@@ -105,9 +105,9 @@ if (isset($_GET['logout'])) {
             <ul>
                 <li><a href="fileManager">File Manager</a></li>
                 <li><a href="linkManager">Link Manager</a></li>
-                <li><a href="#">Fitur 3</a></li>
+                <!-- <li><a href="#">Fitur 3</a></li>
                 <li><a href="#">Fitur 4</a></li>
-                <li><a href="#">Fitur 5</a></li>
+                <li><a href="#">Fitur 5</a></li> -->
             </ul>
         </div>
         <a href="dashboard?logout=true" class="logout-button">Logout</a>

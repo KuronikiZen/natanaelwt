@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($uploadOk) {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $targetFile)) {
-            file_put_contents("log.txt", "The file " . basename($_FILES["fileToUpload"]["name"]) . " has been uploaded to " . $targetDir . "\n", FILE_APPEND | LOCK_EX);
+            file_put_contents("log.txt", "The file " . basename($_FILES["fileToUpload"]["name"]) . " has been uploaded to " . $targetDir . " by ".$_SESSION['user']."\n", FILE_APPEND | LOCK_EX);
             $response = ['status' => 'success', 'message' => 'File uploaded successfully.'];
         } else {
             $response['message'] = 'Error uploading the file.';
